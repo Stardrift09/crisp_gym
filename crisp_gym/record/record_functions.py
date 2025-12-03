@@ -4,7 +4,7 @@ This module should be used in conjunction with the `RecordingManager` class.
 """
 
 from __future__ import annotations
-
+from line_profiler import profile
 import logging
 from typing import TYPE_CHECKING, Callable
 
@@ -111,7 +111,7 @@ def make_teleop_fn(env: ManipulatorBaseEnv, leader: TeleopRobot) -> Callable:
     prev_pose = leader.robot.end_effector_pose
     prev_joint = leader.robot.joint_values
     first_step = True
-
+    # @profile
     def _fn() -> tuple:
         """Teleoperation function to be called in each step.
 

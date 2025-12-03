@@ -46,7 +46,7 @@ def main():
     parser.add_argument(
         "--fps",
         type=int,
-        default=15,
+        default=10,
         help="Frames per second for recording",
     )
     parser.add_argument(

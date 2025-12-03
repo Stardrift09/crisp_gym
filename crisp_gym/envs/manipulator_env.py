@@ -223,7 +223,7 @@ class ManipulatorBaseEnv(gym.Env):
         """Wait until the robot, gripper, cameras, and sensors are ready."""
         logger.debug("Waiting for robot, gripper, cameras, and sensors to be ready...")
 
-        self.robot.wait_until_ready(timeout=3)
+        self.robot.wait_until_ready(timeout=10)
 
         if self.config.gripper_mode != GripperMode.NONE:
             self.gripper.wait_until_ready(timeout=3)

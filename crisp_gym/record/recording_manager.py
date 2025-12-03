@@ -11,7 +11,7 @@ from typing import Callable, Literal
 
 import numpy as np
 import rclpy
-
+from line_profiler import profile
 # TODO: make this optional, we do not want to depend on lerobot
 try:
     from lerobot.utils.constants import HF_LEROBOT_HOME
@@ -139,7 +139,7 @@ class RecordingManager(ABC):
             logger.info(
                 f"Resuming from episode {dataset.num_episodes} with {self.config.num_episodes} episodes to record."
             )
-            self.episode_count_queue.put(dataset.num_episodes - 1)
+            self.episode_count_queue.put(dataset.num_episodes)
         else:
             logger.info(
                 f"[green]Creating new dataset: {self.config.repo_id}", extra={"markup": True}
@@ -264,7 +264,7 @@ class RecordingManager(ABC):
 
         self.queue.task_done()
         logger.info("Writter process finished.")
-
+    # @profile
     def record_episode(
         self,
         data_fn: Callable[[], tuple[Observation, Action]],

@@ -20,16 +20,21 @@ gripper_config:
   from_yaml: "grippers/gripper_left_v2.yaml"
 
 camera_configs:
-  - camera_name: "primary"
-    camera_frame: "primary_link"
+  - camera_name: "right_third_person_camera_top_right"
+    camera_frame: "primary_link" # TODO: add a topic to publish the camera frame
     resolution: [256, 256]
-    camera_color_image_topic: "left_third_person_camera/image_raw"
-    camera_color_info_topic: "left_third_person_camera/camera_info"
-  - camera_name: "wrist"
-    camera_frame: "wrist_link" 
-    resolution: [256, 256]
-    camera_color_image_topic: "left_wrist_camera/color/image_rect_raw"
-    camera_color_info_topic: "left_wrist_camera/color/camera_info"
+    camera_color_image_topic: "right_third_person_camera_top_right/color/image_raw"
+    camera_color_info_topic: "right_third_person_camera_top_right/color/camera_info"
+  # - camera_name: "primary"
+  #   camera_frame: "primary_link"
+  #   resolution: [256, 256]
+  #   camera_color_image_topic: "left_third_person_camera/image_raw"
+  #   camera_color_info_topic: "left_third_person_camera/camera_info"
+  # - camera_name: "wrist"
+  #   camera_frame: "wrist_link" 
+  #   resolution: [256, 256]
+  #   camera_color_image_topic: "left_wrist_camera/color/image_rect_raw"
+  #   camera_color_info_topic: "left_wrist_camera/color/camera_info"
 
 sensor_configs:
   - sensor_type: "force_torque"
