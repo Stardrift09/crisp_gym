@@ -127,6 +127,16 @@ class ManipulatorBaseEnv(gym.Env):
                     for camera in self.cameras
                     if camera.config.resolution is not None
                 },
+                **{
+                    f"{ObservationKeys.IMAGE_OBS}.{camera.config.camera_name}_depth": gym.spaces.Box(
+                        low=0,
+                        high=65535,
+                        shape=(*camera.config.resolution, 1),
+                        dtype=np.uint16,
+                    )
+                    for camera in self.cameras
+                    if camera.config.resolution is not None and camera.has_depth_configured
+                },
                 **self.get_state_observation_spaces(cartesian_dim),
                 # Task description
                 "task": gym.spaces.Text(max_length=256),
@@ -229,7 +239,7 @@ class ManipulatorBaseEnv(gym.Env):
             self.gripper.wait_until_ready(timeout=3)
 
         for camera in self.cameras:
-            camera.wait_until_ready(timeout=3)
+            camera.wait_until_ready(timeout=20)
 
         for sensor in self.sensors:
             sensor.wait_until_ready(timeout=3)
@@ -277,10 +287,20 @@ class ManipulatorBaseEnv(gym.Env):
         if ObservationKeys.JOINT_OBS in self.config.observations_to_include_to_state:
             obs[ObservationKeys.JOINT_OBS] = self.robot.joint_values
 
-        # Camera images
+        # Camera images (color + depth)
         for camera in self.cameras:
             image_key = f"{ObservationKeys.IMAGE_OBS}.{camera.config.camera_name}"
             obs[image_key] = camera.current_image
+
+            if camera.has_depth_configured:
+                depth_image = camera.current_depth_image
+                if depth_image is not None:
+                    depth_key = f"{ObservationKeys.IMAGE_OBS}.{camera.config.camera_name}_depth"
+                    obs[depth_key] = depth_image[:, :, np.newaxis]  # (H, W) -> (H, W, 1)
+                else:
+                    logger.warning(
+                        f"Depth image for camera {camera.config.camera_name} not yet available."
+                    )
 
         # Sensor data
         for sensor in self.sensors:

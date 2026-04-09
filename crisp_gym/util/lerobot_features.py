@@ -104,7 +104,17 @@ def get_features(
             continue  # Task features are handled separately
 
         elif feature_key.startswith("observation.images"):
-            if not use_video:
+            is_depth = feature_key.endswith("_depth")
+
+            if is_depth:
+                # Depth images are saved as lossless 16-bit PNG files (dtype: "image").
+                # Using video encoding would apply lossy compression and destroy depth accuracy.
+                features[feature_key] = {
+                    "dtype": "image",
+                    "shape": env.observation_space[feature_key].shape,  # (H, W, 1)
+                    "names": ["height", "width", "channels"],
+                }
+            elif not use_video:
                 features[feature_key] = {
                     "dtype": "image",
                     "shape": env.observation_space[feature_key].shape,
@@ -129,7 +139,7 @@ def get_features(
     image_resolutions = [
         feature["shape"]
         for key, feature in features.items()
-        if key.startswith("observation.images.")
+        if key.startswith("observation.images.") and not key.endswith("_depth")
     ]
     if len(set(image_resolutions)) > 1:
         logger.warning(

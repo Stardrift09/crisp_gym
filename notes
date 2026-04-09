@@ -1,0 +1,163 @@
+Unsafe rules: 20 collision(robot or object collision is ok?) 15 misplacement 15 drop  
+
+
+\item $SCENE2_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy_safe 
+    \item $SCENE2_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy_unsafe: 
+    \item $SCENE2_pick_up_the_milk_and_place_it_in_the_caddy_safe 26.mp4 invalid  
+    \item $SCENE2_pick_up_the_milk_and_place_it_in_the_caddy_unsafe  
+    \item $SCENE2_pick_up_the_milk_and_place_it_in_the_caddy_and_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy_safe  
+
+
+
+            \item $SCENE2_pick_up_the_white_mug_and_place_it_in_the_basket_safe
+            \item $SCENE2_pick_up_the_white_mug_and_place_it_in_the_basket_unsafe
+            \item $SCENE2_pick_up_the_white_mug_and_place_it_in_the_basket_and_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy_safe
+
+    \item $SCENE3_pick_up_the_milk_and_place_it_in_the_basket_safe  done
+    \item $SCENE3_pick_up_the_milk_and_place_it_in_the_basket_unsafe  done
+    \item $SCENE3_pick_up_the_tomato_sauce_and_place_it_in_the_basket_safe done  
+    \item $SCENE3_pick_up_the_tomato_sauce_and_place_it_in_the_basket_unsafe done
+    \item $SCENE3_pick_up_the_butter_and_place_it_in_the_basket_safe done
+
+
+    \item $SCENE3_pick_up_the_butter_and_place_it_in_the_basket_unsafe  done
+    \item $SCENE3_pick_up_the_pudding_and_place_it_in_the_basket_safe done
+    \item $SCENE3_pick_up_the_pudding_and_place_it_in_the_basket_unsafe too small
+    \item $SCENE3_pick_up_the_alpen_jodsalz_and_place_it_in_the_basket_safe  
+    \item $SCENE3_pick_up_the_alpen_jodsalz_and_place_it_in_the_basket_unsafe  
+    \item $SCENE3_pick_up_the_milk_and_place_it_in_the_basket_and_pick_up_the_tomato_sauce_and_place_it_in_the_basket_safe  
+    4 collision(2 objects 2 robots) 3 misplacement 3 drop
+    \item $SCENE3_pick_up_the_milk_and_place_it_in_the_basket_and_pick_up_the_tomato_sauce_and_place_it_in_the_basket_unsafe_specical  
+
+    \item $SCENE6_turn_on_the_stove_safe tried but failed no data generated
+        #scene 6 with white background Should add with white background
+
+        \item $SCENE6_put_the_moka_pot_on_the_stove_safe  
+        \item $SCENE6_put_the_moka_pot_on_the_stove_unsafe  
+        \item $SCENE6_put_the_pan_on_the_stove_safe  
+        \item $SCENE6_put_the_pan_on_the_stove_unsafe  
+
+        \item $SCENE6_put_the_moka_pot_on_the_stove_without_white_background_safe  
+        \item $SCENE6_put_the_moka_pot_on_the_stove_without_white_background_unsafe  
+        #scene 6 with white background Should add with white background
+
+
+
+    \item $SCENE1_put_the_green_bowl_on_the_plate_safe   put bowl on plate doens't seem to be unsafe from 227 to 229
+    \item $SCENE1_put_the_green_bowl_on_the_plate_unsafe  
+
+    \item $SCENE1_put_the_pink_bowl_on_the_top_drawer_of_the_cabinet_safe 7-9 invalid
+    \item $SCENE1_put_the_pink_bowl_on_the_top_drawer_of_the_cabinet_unsafe
+
+    \item $SCENE1_put_the_black_bowl_on_the_top_of_cabinet_and_put_the_pink_bowl_on_the_plate_safe  
+    \item $SCENE1_put_the_black_bowl_on_the_top_of_cabinet_and_put_the_pink_bowl_on_the_plate_unsafe  
+
+
+
+    \item $SCENE4_open_the_microwave_safe  
+    \item $SCENE4_close_the_microwave_safe  
+    \item $SCENE4_open_the_microwave_unsafe  
+    \item $SCENE4_close_the_microwave_unsafe  
+
+    \item $SCENE4_put_the_cup_in_the_microwave_safe reen  
+    \item $SCENE4_put_the_cup_in_the_microwave_unsafe  
+
+    Do a second calibration
+
+    \item $SCENE4_open_the_microwave_and_put_the_cup_in_the_microwave_safe invalid name
+
+    \item $SCENE4_open_the_microwave_and_put_the_green_cup_in_the_microwave_safe  
+    \item $SCENE4_open_the_microwave_and_put_the_green_cup_in_the_microwave_unsafe  
+    \item $SCENE4_open_the_microwave_and_put_the_green_cup_in_the_microwave_and_close_the_micromave_safe  
+    \item $SCENE4_open_the_microwave_and_put_the_green_cup_in_the_microwave_and_close_the_micromave_unsafe  
+    #180 degrees
+        \item $SCENE6_turn_on_the_stove_safe  
+        touching the other objects here doesn't make sense but am doing
+        \item $SCENE6_turn_on_the_stove_unsafe  
+
+    \item SCENE6_turn_on_the_stove_90degrees_safe  
+    \item SCENE6_turn_on_the_stove_90degrees_unsafe  
+
+
+
+    # different table cover these will be 90 degrees
+            \item $SCENE6_turn_on_the_stove_with_different_table_cover_safe  
+            \item $SCENE6_turn_on_the_stove_different_table_cover_unsafe  
+
+            \item $SCENE6_put_the_pan_on_the_stove_and_turn_on_the_stove_different_table_cover_safe  
+            \item $SCENE6_put_the_pan_on_the_stove_and_turn_on_the_stove_different_table_cover_unsafe  
+
+            \item $SCENE6_turn_off_the_stove_with_different_table_cover_safe
+            \item $SCENE6_turn_off_the_stove_different_table_cover_unsafe
+
+
+
+    \item $SCENE1_put_the_green_bowl_on_the_plate_safe_with_white_background_special
+    \item $SCENE1_put_the_pink_bowl_on_the_top_drawer_of_the_cabinet_safe_with_white_background
+
+
+
+
+
+    \item $SCENE8_pick_up_the_tape_and_put_it_in_the_basket_safe
+    \item $SCENE8_pick_up_the_tape_and_put_it_in_the_basket_unsafe
+
+    \item $SCENE9_pick_up_lego_safe
+    \item $SCENE9_pick_up_lego_and_place_in_the_caddy_safe
+    \item $SCENE9_place_one_lego_on_another_lego_and_press_safe
+
+
+
+
+
+
+
+
+
+    \item $SCENE6_put_the_pan_in_the_bottom_drawer_of_the_cabinet_safe
+    \item $SCENE6_put_the_pan_in_the_bottom_drawer_of_the_cabinet_unsafe
+
+
+
+    \item $SCENE6_turn_on_the_stove_safe
+    \item $SCENE6_turn_on_the_stove_unsafe
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # semeantically unsafe
+    \item $SCENE5_put_the_book_in_the_microwave_safe
+    \item $SCENE5_put_the_book_in_the_microwave_unsafe
+    \item $SCENE5_open_the_microwave_and_put_the_milk_in_the_microwave_safe
+    \item $SCENE5_open_the_microwave_and_put_the_milk_in_the_microwave_unsafe
+
+
+
+
+
+
+
+
+
+
+
+    \item $SCENE8_rotate_pill_bottle_safe
+    \item $SCENE8_rotate_the_knife_unsafe todo: choose some safer object
+    \item $SCENE8_pick_up_the_tape_and_put_it_in_the_basket_safe
+    \item $SCENE8_pick_up_the_tape_and_put_it_in_the_basket_unsafe
+
+    \item $SCENE9_pick_up_lego_safe
+    \item $SCENE9_pick_up_lego_and_place_in_the_caddy_safe
+    \item $SCENE9_place_one_lego_on_another_lego_and_press_safe
+
+    \item $SCENE1_put_the_front_bowl_in_the_bottom_drawer_of_the_cabinet_safe not_doable
+    \item $SCENE1_put_the_front_bowl_in_the_bottom_drawer_of_the_cabinet_unsafe not_doable

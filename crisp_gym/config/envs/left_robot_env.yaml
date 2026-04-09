@@ -3,6 +3,14 @@ gripper_mode: "absolute_continuous"
 cartesian_control_param_config: null  # Will use CRISP_CONFIG_PATH defaults
 joint_control_param_config: null      # Will use CRISP_CONFIG_PATH defaults
 
+# NOTE: These are the defaults anyway
+observations_to_include_to_state:
+  - observation.state.cartesian
+  - observation.state.gripper
+  - observation.state.joints
+  - observation.state.target
+
+
 robot_config:
   robot_type: "franka"
   time_to_home: 2.0
@@ -20,22 +28,25 @@ gripper_config:
   from_yaml: "grippers/gripper_left_v2.yaml"
 
 camera_configs:
-  - camera_name: "right_third_person_camera_top_right"
+  - camera_name: "left_third_person_camera"
     camera_frame: "primary_link" # TODO: add a topic to publish the camera frame
-    resolution: [256, 256]
-    camera_color_image_topic: "right_third_person_camera_top_right/color/image_raw"
-    camera_color_info_topic: "right_third_person_camera_top_right/color/camera_info"
+    resolution: [360, 640]
+    camera_color_image_topic: "left_third_person_camera_shaotong/color/image_raw"
+    camera_color_info_topic: "left_third_person_camera_shaotong/color/camera_info"
+    camera_depth_image_topic: "left_third_person_camera_shaotong/depth/image_raw"
+    camera_depth_info_topic: "left_third_person_camera_shaotong/depth/camera_info"
   # - camera_name: "primary"
   #   camera_frame: "primary_link"
   #   resolution: [256, 256]
   #   camera_color_image_topic: "left_third_person_camera/image_raw"
   #   camera_color_info_topic: "left_third_person_camera/camera_info"
-  # - camera_name: "wrist"
-  #   camera_frame: "wrist_link" 
-  #   resolution: [256, 256]
-  #   camera_color_image_topic: "left_wrist_camera/color/image_rect_raw"
-  #   camera_color_info_topic: "left_wrist_camera/color/camera_info"
-
+  - camera_name: "wrist"
+    camera_frame: "wrist_link" 
+    resolution: [360, 640]
+    camera_color_image_topic: "left_wrist_camera/color/image_raw"
+    camera_color_info_topic: "left_wrist_camera/color/camera_info"
+    camera_depth_image_topic: "left_wrist_camera/depth/image_rect_raw"
+    camera_depth_info_topic: "left_wrist_camera/depth/camera_info"
 sensor_configs:
   - sensor_type: "force_torque"
     shape: [6,]

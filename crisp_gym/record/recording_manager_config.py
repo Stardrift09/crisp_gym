@@ -31,7 +31,7 @@ class RecordingManagerConfig:
     use_sound: bool = True
     queue_size: int = 16
     writer_timeout: float = 10.0
-
+    use_shared_memory: bool = False
     @classmethod
     def from_yaml(cls, yaml_path: Path | str, **overrides) -> "RecordingManagerConfig":  # noqa: ANN003
         """Create a RecordingManagerConfig from a YAML file.

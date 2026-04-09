@@ -111,7 +111,7 @@ def make_teleop_fn(env: ManipulatorBaseEnv, leader: TeleopRobot) -> Callable:
     prev_pose = leader.robot.end_effector_pose
     prev_joint = leader.robot.joint_values
     first_step = True
-    # @profile
+    @profile
     def _fn() -> tuple:
         """Teleoperation function to be called in each step.
 

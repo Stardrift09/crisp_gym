@@ -7,9 +7,9 @@ pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_colwidth', None)
 # Loop from 0 to 10 (inclusive)
-for i in range(200,201):
+for i in range(209,210):
     # Construct the filename with zero-padded episode number
-    filename = f"/home/shaotongchen/.cache/huggingface/lerobot/EfreetSultan/real_world_2/data/chunk-000/episode_{i:06d}.parquet"
+    filename = f"/home/shaotongchen/.cache/huggingface/LSY-lab/real_world_4/second_tset/data/chunk-000/episode_{i:06d}.parquet"
 
 
     # Read the Parquet file

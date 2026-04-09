@@ -1,7 +1,8 @@
 """Keyboard event listener for controlling episode recording."""
-
+import pdb
 import logging
 import multiprocessing as mp
+from multiprocessing import shared_memory # This is a submodule so has to be imported
 import subprocess
 import threading
 import time
@@ -55,6 +56,10 @@ class RecordingManager(ABC):
                 find_config("recording/default_recording.yaml"), **kwargs
             )
         )
+        self.use_shared_memory = False
+        self.use_shared_memory_init=False
+        if self.use_shared_memory:
+            self.use_shared_memory_init=True
 
         self.state: Literal[
             "is_waiting",
@@ -66,7 +71,6 @@ class RecordingManager(ABC):
         ] = "is_waiting"
 
         self.episode_count = 0
-
         self.queue = mp.JoinableQueue(self.config.queue_size)
         self.episode_count_queue = mp.Queue(1)
         self.dataset_ready = mp.Event()
@@ -76,7 +80,7 @@ class RecordingManager(ABC):
             target=self._writer_proc,
             args=(),
             name="dataset_writer",
-            daemon=True,
+            daemon=False,
         )
         self.writer.start()
 
@@ -124,13 +128,16 @@ class RecordingManager(ABC):
     def get_instructions(self) -> str:
         """Return the instructions to use the recording manager."""
         raise NotImplementedError()
-
+    @profile
     def _create_dataset(self) -> LeRobotDataset:
         """Factory function to create a dataset object."""
         logger.debug("Creating dataset object.")
         if self.config.resume:
             logger.info(f"Resuming recording from existing dataset: {self.config.repo_id}")
             dataset = LeRobotDataset(repo_id=self.config.repo_id)
+            logger.info("Dataset created, starting image writer...")
+            dataset.start_image_writer(num_processes=8, num_threads=1)
+            logger.info("Image writer started inside subprocess!")
             if self.config.num_episodes <= dataset.num_episodes:
                 logger.error(
                     f"The dataset already has {dataset.num_episodes} recorded. Please select a larger number."
@@ -158,10 +165,16 @@ class RecordingManager(ABC):
                 robot_type=self.config.robot_type,
                 features=self.config.features,
                 use_videos=True,
+                # image_writer_threads=1,
+                # image_writer_processes=16,
+                # batch_encoding_size=8,
             )
+            logger.info("Dataset created, starting image writer...")
+            dataset.start_image_writer(num_processes=8, num_threads=1)
+            logger.info("Image writer started inside subprocess!")
             logger.debug(f"Dataset created with meta: {dataset.meta}")
         return dataset
-
+    @profile
     def _writer_proc(self):
         """Process to write data to the dataset."""
         logger.info("Starting dataset writer process.")
@@ -171,13 +184,23 @@ class RecordingManager(ABC):
 
         while True:
             msg = self.queue.get()
+            print(self.queue.qsize())
             logger.debug(f"Received message: {msg['type']}")
             try:
                 mtype = msg["type"]
 
                 if mtype == "FRAME":
                     obs, action, task = msg["data"]
-
+                    if self.use_shared_memory:
+                        # Reconstruct images from shared memory
+                        for key in ["left_third_person_camera", "wrist"]:
+                            img_info = obs[f"observation.images.{key}"]
+                            shm = shared_memory.SharedMemory(name=img_info["shm_name"])
+                            try:
+                                img = np.ndarray(img_info["shape"], dtype=np.dtype(img_info["dtype"]), buffer=shm.buf)
+                                obs[f"observation.images.{key}"] = img.copy()  # copy to local memory
+                            finally:
+                                shm.close()  # MUST close, else leak
                     logger.debug(f"Received frame with action: {action} and obs: {obs.keys()}")
 
                     # Build frame directly from observation using feature-based approach
@@ -195,7 +218,6 @@ class RecordingManager(ABC):
                                 frame[feature_name] = value.astype(np.float32)
                             else:
                                 frame[feature_name] = value
-
                     # Concatenate state vector
                     frame["observation.state"] = concatenate_state_features(
                         obs, self.config.features
@@ -255,6 +277,7 @@ class RecordingManager(ABC):
                             exc_info=True,
                         )
                 elif mtype == "SHUTDOWN":
+                    dataset.stop_image_writer()
                     logger.info("Shutting down writer process.")
                     break
             except Exception as e:
@@ -264,7 +287,7 @@ class RecordingManager(ABC):
 
         self.queue.task_done()
         logger.info("Writter process finished.")
-    # @profile
+    @profile
     def record_episode(
         self,
         data_fn: Callable[[], tuple[Observation, Action]],
@@ -284,6 +307,9 @@ class RecordingManager(ABC):
             self._wait_for_start_signal()
         except StopIteration:
             logger.info("Recording manager is shutting down.")
+            if self.use_shared_memory:
+                self.left_third_person_camera_shm.unlink()
+                self.wrist_shm.unlink()
             return
 
         if on_start:
@@ -304,8 +330,45 @@ class RecordingManager(ABC):
                 time.sleep(sleep_time)
                 continue
 
-            self.queue.put({"type": "FRAME", "data": (obs, action, task)})
+            if self.use_shared_memory_init:
+                self.use_shared_memory_init = False
+                # Preallocate shared memory buffers for images
+                
+                left_cam_shape = obs["observation.images.left_third_person_camera"].shape
+                left_cam_dtype = obs["observation.images.left_third_person_camera"].dtype
 
+                wrist_shape = obs["observation.images.wrist"].shape
+                wrist_dtype = obs["observation.images.wrist"].dtype
+
+                # create shared memory blocks once
+                self.left_third_person_camera_shm = shared_memory.SharedMemory(create=True, size=np.prod(left_cam_shape) * left_cam_dtype.itemsize)
+                self.wrist_shm = shared_memory.SharedMemory(create=True, size=np.prod(wrist_shape) * wrist_dtype.itemsize)
+
+                self.left_third_person_camera_buf = np.ndarray(left_cam_shape, dtype=left_cam_dtype, buffer=self.left_third_person_camera_shm.buf)
+                self.wrist_buf = np.ndarray(wrist_shape, dtype=wrist_dtype, buffer=self.wrist_shm.buf)
+            if self.use_shared_memory:
+                # 只复制 obs 中非图像部分
+                obs_meta = obs.copy()
+                
+                # 对每个相机图像，拷贝到共享内存，并在 obs_meta 中只保留 metadata
+                for key in ["left_third_person_camera", "wrist"]:
+                    full_key = "observation.images." + key
+                    img = obs[full_key]  # 原始 numpy array
+                    shm = getattr(self, f"{key}_shm")  # 预分配的 shared memory
+                    np.copyto(np.ndarray(img.shape, dtype=img.dtype, buffer=shm.buf), img) # dst, src
+                    obs_meta[full_key] = {
+                        "shm_name": shm.name,   # name of the shared memory block
+                        "shape": img.shape,     # shape of the array
+                        "dtype": str(img.dtype) # dtype as string, e.g., 'uint8' or 'float32'
+                    }
+                    # 这里不要 unlink，只用 close()
+                    shm.close()
+                
+                # 把轻量化的 obs_meta + action + task 放入队列
+                self.queue.put({"type": "FRAME", "data": (obs_meta, action, task)})
+
+            else:
+                self.queue.put({"type": "FRAME", "data": (obs, action, task)})
             sleep_time = 1 / self.config.fps - (time.time() - frame_start)
             if sleep_time > 0:
                 time.sleep(sleep_time)
@@ -371,8 +434,10 @@ class RecordingManager(ABC):
             self.queue.put({"type": "PUSH_TO_HUB"})
         logger.info("Shutting down the record process...")
         self.queue.put({"type": "SHUTDOWN"})
-
         self.writer.join()
+        if self.use_shared_memory:
+            self.left_third_person_camera_shm.unlink()
+            self.wrist_shm.unlink()
 
     def _set_to_wait(self) -> None:
         """Set to wait if possible."""
@@ -474,6 +539,11 @@ class KeyboardRecordingManager(RecordingManager):
             **kwargs: Individual parameters for backwards compatibility.
         """
         super().__init__(config=config, **kwargs)
+        # self.use_shared_memory = False
+        # if self.use_shared_memory:
+        #     self.use_shared_memory_init = True
+        # else:
+        #     self.use_shared_memory_init = False
         self.listener = keyboard.Listener(on_press=self._on_press)
 
     @override
