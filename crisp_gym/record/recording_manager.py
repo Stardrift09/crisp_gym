@@ -18,7 +18,12 @@ try:
     from lerobot.utils.constants import HF_LEROBOT_HOME
 except ImportError:
     from lerobot.constants import HF_LEROBOT_HOME
-from lerobot.datasets.lerobot_dataset import LeRobotDataset
+from lerobot.datasets.lerobot_dataset import (
+    CODEBASE_VERSION as _LEROBOT_CODEBASE_VERSION,
+    LeRobotDataset,
+    LeRobotDatasetMetadata as _LeRobotDatasetMetadata,
+)
+from lerobot.datasets.video_utils import get_safe_default_codec as _get_safe_default_codec
 from pynput import keyboard
 from rclpy.executors import SingleThreadedExecutor
 from rich import print
@@ -134,7 +139,24 @@ class RecordingManager(ABC):
         logger.debug("Creating dataset object.")
         if self.config.resume:
             logger.info(f"Resuming recording from existing dataset: {self.config.repo_id}")
-            dataset = LeRobotDataset(repo_id=self.config.repo_id)
+            # Bypass __init__ to skip slow parquet loading — same pattern lerobot uses in .create()
+            dataset = LeRobotDataset.__new__(LeRobotDataset)
+            dataset.repo_id = self.config.repo_id
+            dataset.root = Path("/mnt/DataExtern/LSY-lab/real_world_5")
+            dataset.revision = _LEROBOT_CODEBASE_VERSION
+            dataset.tolerance_s = 1e-4
+            dataset.video_backend = _get_safe_default_codec()
+            dataset.batch_encoding_size = 1
+            dataset.episodes_since_last_encoding = 0
+            dataset.image_writer = None
+            dataset.episode_buffer = None
+            dataset.image_transforms = None
+            dataset.delta_timestamps = None
+            dataset.delta_indices = None
+            dataset.episodes = None
+            dataset.meta = _LeRobotDatasetMetadata(dataset.repo_id, dataset.root, dataset.revision)
+            dataset.hf_dataset = dataset.create_hf_dataset()
+            dataset.episode_data_index = None
             logger.info("Dataset created, starting image writer...")
             dataset.start_image_writer(num_processes=8, num_threads=1)
             logger.info("Image writer started inside subprocess!")
