@@ -152,7 +152,7 @@ class RecordingManager(ABC):
                 f"[green]Creating new dataset: {self.config.repo_id}", extra={"markup": True}
             )
             # Clean up existing dataset if it exists
-            if Path(HF_LEROBOT_HOME / self.config.repo_id).exists():
+            if Path("/mnt/DataExtern/LSY-lab/real_world_5").exists():
                 logger.error(
                     f"The repo_id already exists. If you intended to resume the collection of data, then execute this script with the --resume flag. Otherwise remove it:\n'rm -r {str(Path(HF_LEROBOT_HOME / self.config.repo_id))}'."
                 )
@@ -165,6 +165,7 @@ class RecordingManager(ABC):
                 robot_type=self.config.robot_type,
                 features=self.config.features,
                 use_videos=True,
+                root="/mnt/DataExtern/LSY-lab/real_world_5",
                 # image_writer_threads=1,
                 # image_writer_processes=16,
                 # batch_encoding_size=8,

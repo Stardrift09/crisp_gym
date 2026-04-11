@@ -1,4 +1,4 @@
-Unsafe rules: 20 collision(robot or object collision is ok?) 15 misplacement 15 drop  
+Unsafe rules: 20 collision(robot or object collision is ok?) 10 misplacement 10 drop  10 unsuccessful grasp
 
 
 \item $SCENE2_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy_safe 
@@ -15,19 +15,18 @@ Unsafe rules: 20 collision(robot or object collision is ok?) 15 misplacement 15 
 
     \item $SCENE3_pick_up_the_milk_and_place_it_in_the_basket_safe  done
     \item $SCENE3_pick_up_the_milk_and_place_it_in_the_basket_unsafe  done
-    \item $SCENE3_pick_up_the_tomato_sauce_and_place_it_in_the_basket_safe done  
+    \item $SCENE3_pick_up_the_tomato_sauce_and_place_it_in_the_basket_safe done
     \item $SCENE3_pick_up_the_tomato_sauce_and_place_it_in_the_basket_unsafe done
     \item $SCENE3_pick_up_the_butter_and_place_it_in_the_basket_safe done
 
 
-    \item $SCENE3_pick_up_the_butter_and_place_it_in_the_basket_unsafe  done
+    \item $SCENE3_pick_up_the_butter_and_place_it_in_the_basket_unsafe done
     \item $SCENE3_pick_up_the_pudding_and_place_it_in_the_basket_safe done
-    \item $SCENE3_pick_up_the_pudding_and_place_it_in_the_basket_unsafe too small
-    \item $SCENE3_pick_up_the_alpen_jodsalz_and_place_it_in_the_basket_safe  
-    \item $SCENE3_pick_up_the_alpen_jodsalz_and_place_it_in_the_basket_unsafe  
+    \item $SCENE3_pick_up_the_pudding_and_place_it_in_the_basket_unsafe done
+    \item $SCENE3_pick_up_the_alpen_jodsalz_and_place_it_in_the_basket_safe done
+    \item $SCENE3_pick_up_the_alpen_jodsalz_and_place_it_in_the_basket_unsafe done
     \item $SCENE3_pick_up_the_milk_and_place_it_in_the_basket_and_pick_up_the_tomato_sauce_and_place_it_in_the_basket_safe  
-    4 collision(2 objects 2 robots) 3 misplacement 3 drop
-    \item $SCENE3_pick_up_the_milk_and_place_it_in_the_basket_and_pick_up_the_tomato_sauce_and_place_it_in_the_basket_unsafe_specical  
+    \item $SCENE3_pick_up_the_milk_and_place_it_in_the_basket_and_pick_up_the_tomato_sauce_and_place_it_in_the_basket_unsafe_
 
     \item $SCENE6_turn_on_the_stove_safe tried but failed no data generated
         #scene 6 with white background Should add with white background

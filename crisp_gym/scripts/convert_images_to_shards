@@ -1,0 +1,35 @@
+import os
+import tarfile
+from pathlib import Path
+
+# CONFIG
+DATASET_PATH = "/mnt/DataExtern/LSY-lab/real_world_4/images"
+OUTPUT_PATH = "/mnt/DataExtern/LSY-lab/real_world_4/shards"
+SHARD_SIZE = 10000
+IMAGE_EXTS = [".jpg", ".jpeg", ".png", ".webp"]
+
+os.makedirs(OUTPUT_PATH, exist_ok=True)
+
+# Collect all image paths
+image_paths = []
+for root, _, files in os.walk(DATASET_PATH):
+    for f in files:
+        if any(f.lower().endswith(ext) for ext in IMAGE_EXTS):
+            image_paths.append(os.path.join(root, f))
+
+print(f"Found {len(image_paths)} images")
+
+# Create shards
+shard_id = 0
+for i in range(0, len(image_paths), SHARD_SIZE):
+    shard_file = os.path.join(OUTPUT_PATH, f"shard-{shard_id:05d}.tar")
+    
+    with tarfile.open(shard_file, "w") as tar:
+        for img_path in image_paths[i:i + SHARD_SIZE]:
+            rel_path = os.path.relpath(img_path, DATASET_PATH)
+            tar.add(img_path, arcname=rel_path)
+    
+    print(f"Created {shard_file}")
+    shard_id += 1
+
+print("Done!")

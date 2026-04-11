@@ -1,0 +1,20 @@
+import os
+import tarfile
+from pathlib import Path
+
+SHARDS_DIR = "/mnt/DataExtern/LSY-lab/real_world_4/shards"
+OUTPUT_DIR = "/mnt/DataExtern/LSY-lab/real_world_4/extracted"
+
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+tar_files = sorted(Path(SHARDS_DIR).glob("*.tar"))
+
+print(f"Found {len(tar_files)} shards")
+
+for tar_path in tar_files:
+    print(f"Extracting {tar_path.name} ...")
+    
+    with tarfile.open(tar_path, "r") as tar:
+        tar.extractall(path=OUTPUT_DIR)
+
+print("Done extracting all shards!")
