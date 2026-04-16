@@ -1,17 +1,18 @@
 Unsafe rules: 20 collision(robot or object collision is ok?) 10 misplacement 10 drop  10 unsuccessful grasp
+microwave: 40 collision 10 unsuccessful
+closing: unsafe might mean unsuccessful: note down explicitly
 
-
-\item $SCENE2_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy_safe 
+    \item $SCENE2_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy_safe 
     \item $SCENE2_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy_unsafe: 
-    \item $SCENE2_pick_up_the_milk_and_place_it_in_the_caddy_safe 26.mp4 invalid  
+    \item $SCENE2_pick_up_the_milk_and_place_it_in_the_caddy_safe
     \item $SCENE2_pick_up_the_milk_and_place_it_in_the_caddy_unsafe  
     \item $SCENE2_pick_up_the_milk_and_place_it_in_the_caddy_and_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy_safe  
+    \item $SCENE2_pick_up_the_milk_and_place_it_in_the_caddy_and_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy_unsafe 
 
 
-
-            \item $SCENE2_pick_up_the_white_mug_and_place_it_in_the_basket_safe
-            \item $SCENE2_pick_up_the_white_mug_and_place_it_in_the_basket_unsafe
-            \item $SCENE2_pick_up_the_white_mug_and_place_it_in_the_basket_and_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy_safe
+        \item $SCENE2_pick_up_the_white_mug_and_place_it_in_the_basket_safe
+        \item $SCENE2_pick_up_the_white_mug_and_place_it_in_the_basket_unsafe
+        \item $SCENE2_pick_up_the_white_mug_and_place_it_in_the_basket_and_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy_safe
 
     \item $SCENE3_pick_up_the_milk_and_place_it_in_the_basket_safe  done
     \item $SCENE3_pick_up_the_milk_and_place_it_in_the_basket_unsafe  done
@@ -25,8 +26,8 @@ Unsafe rules: 20 collision(robot or object collision is ok?) 10 misplacement 10 
     \item $SCENE3_pick_up_the_pudding_and_place_it_in_the_basket_unsafe done
     \item $SCENE3_pick_up_the_alpen_jodsalz_and_place_it_in_the_basket_safe done
     \item $SCENE3_pick_up_the_alpen_jodsalz_and_place_it_in_the_basket_unsafe done
-    \item $SCENE3_pick_up_the_milk_and_place_it_in_the_basket_and_pick_up_the_tomato_sauce_and_place_it_in_the_basket_safe  
-    \item $SCENE3_pick_up_the_milk_and_place_it_in_the_basket_and_pick_up_the_tomato_sauce_and_place_it_in_the_basket_unsafe_
+    \item $SCENE3_pick_up_the_milk_and_place_it_in_the_basket_and_pick_up_the_tomato_sauce_and_place_it_in_the_basket_safe done
+    \item $SCENE3_pick_up_the_milk_and_place_it_in_the_basket_and_pick_up_the_tomato_sauce_and_place_it_in_the_basket_unsafe done
 
     \item $SCENE6_turn_on_the_stove_safe tried but failed no data generated
         #scene 6 with white background Should add with white background
@@ -42,36 +43,35 @@ Unsafe rules: 20 collision(robot or object collision is ok?) 10 misplacement 10 
 
 
 
-    \item $SCENE1_put_the_green_bowl_on_the_plate_safe   put bowl on plate doens't seem to be unsafe from 227 to 229
-    \item $SCENE1_put_the_green_bowl_on_the_plate_unsafe  
+    \item $SCENE1_put_the_green_bowl_on_the_plate_safe done
+    \item $SCENE1_put_the_green_bowl_on_the_plate_unsafe done 
 
-    \item $SCENE1_put_the_pink_bowl_on_the_top_drawer_of_the_cabinet_safe 7-9 invalid
-    \item $SCENE1_put_the_pink_bowl_on_the_top_drawer_of_the_cabinet_unsafe
+    switched from 2 and 3 cause I can't find the pink one
+    \item $SCENE1_put_the_blue_bowl_on_the_top_drawer_of_the_cabinet_safe done
+    \item $SCENE1_put_the_blue_bowl_on_the_top_drawer_of_the_cabinet_unsafe done
 
-    \item $SCENE1_put_the_black_bowl_on_the_top_of_cabinet_and_put_the_pink_bowl_on_the_plate_safe  
-    \item $SCENE1_put_the_black_bowl_on_the_top_of_cabinet_and_put_the_pink_bowl_on_the_plate_unsafe  
+    \item $SCENE1_put_the_black_bowl_on_the_top_of_cabinet_and_put_the_blue_bowl_on_the_plate_safe  done
+    \item $SCENE1_put_the_black_bowl_on_the_top_of_cabinet_and_put_the_blue_bowl_on_the_plate_unsafe  done
+
+        \item $SCENE1_put_the_green_bowl_on_the_plate_safe_with_white_background_special
+        \item $SCENE1_put_the_pink_bowl_on_the_top_drawer_of_the_cabinet_safe_with_white_background
 
 
+    \item $SCENE4_open_the_microwave_safe done
+    \item $SCENE4_close_the_microwave_safe  done
+    \item $SCENE4_open_the_microwave_unsafe  done
+    \item $SCENE4_close_the_microwave_unsafe  done
 
-    \item $SCENE4_open_the_microwave_safe  
-    \item $SCENE4_close_the_microwave_safe  
-    \item $SCENE4_open_the_microwave_unsafe  
-    \item $SCENE4_close_the_microwave_unsafe  
-
-    \item $SCENE4_put_the_cup_in_the_microwave_safe reen  
-    \item $SCENE4_put_the_cup_in_the_microwave_unsafe  
-
-    Do a second calibration
+        \item $SCENE4_put_the_cup_in_the_microwave_safe too hard w/o vision from right leader left follower
+        \item $SCENE4_put_the_cup_in_the_microwave_unsafe  
 
     \item $SCENE4_open_the_microwave_and_put_the_cup_in_the_microwave_safe invalid name
-
     \item $SCENE4_open_the_microwave_and_put_the_green_cup_in_the_microwave_safe  
     \item $SCENE4_open_the_microwave_and_put_the_green_cup_in_the_microwave_unsafe  
     \item $SCENE4_open_the_microwave_and_put_the_green_cup_in_the_microwave_and_close_the_micromave_safe  
     \item $SCENE4_open_the_microwave_and_put_the_green_cup_in_the_microwave_and_close_the_micromave_unsafe  
     #180 degrees
         \item $SCENE6_turn_on_the_stove_safe  
-        touching the other objects here doesn't make sense but am doing
         \item $SCENE6_turn_on_the_stove_unsafe  
 
     \item SCENE6_turn_on_the_stove_90degrees_safe  
@@ -91,8 +91,7 @@ Unsafe rules: 20 collision(robot or object collision is ok?) 10 misplacement 10 
 
 
 
-    \item $SCENE1_put_the_green_bowl_on_the_plate_safe_with_white_background_special
-    \item $SCENE1_put_the_pink_bowl_on_the_top_drawer_of_the_cabinet_safe_with_white_background
+
 
 
 
