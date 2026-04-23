@@ -1,3 +1,5 @@
 hf upload-large-folder --repo-type dataset LSY-lab/real_world_4 ./real_world_4   --exclude "images/*"   --num-workers 1
 
 hf upload-large-folder   --repo-type dataset   --num-workers 4   --include "images/*"   LSY-lab/real_world_4   /mnt/DataExtern/LSY-lab/real_world_4/shards/
+
+du -sh .

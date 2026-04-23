@@ -92,6 +92,8 @@ class RecordingManager(ABC):
     @property
     def dataset_directory(self) -> Path:
         """Return the path to the dataset directory."""
+        if self.config.use_custom_dataset_path:
+            return Path(self.config.custom_dataset_path)
         return Path(HF_LEROBOT_HOME / self.config.repo_id)
 
     @property
@@ -142,7 +144,7 @@ class RecordingManager(ABC):
             # Bypass __init__ to skip slow parquet loading — same pattern lerobot uses in .create()
             dataset = LeRobotDataset.__new__(LeRobotDataset)
             dataset.repo_id = self.config.repo_id
-            dataset.root = Path("/mnt/DataExtern/LSY-lab/real_world_5")
+            dataset.root = self.dataset_directory
             dataset.revision = _LEROBOT_CODEBASE_VERSION
             dataset.tolerance_s = 1e-4
             dataset.video_backend = _get_safe_default_codec()
@@ -174,12 +176,12 @@ class RecordingManager(ABC):
                 f"[green]Creating new dataset: {self.config.repo_id}", extra={"markup": True}
             )
             # Clean up existing dataset if it exists
-            if Path("/mnt/DataExtern/LSY-lab/real_world_5").exists():
+            if self.dataset_directory.exists():
                 logger.error(
-                    f"The repo_id already exists. If you intended to resume the collection of data, then execute this script with the --resume flag. Otherwise remove it:\n'rm -r {str(Path(HF_LEROBOT_HOME / self.config.repo_id))}'."
+                    f"The repo_id already exists. If you intended to resume the collection of data, then execute this script with the --resume flag. Otherwise remove it:\n'rm -r {str(self.dataset_directory)}'."
                 )
                 raise FileExistsError(
-                    f"The repo_id already exists. If you intended to resume the collection of data, then execute this script with the --resume flag. Otherwise remove it:\n'rm -r {str(Path(HF_LEROBOT_HOME / self.config.repo_id))}'."
+                    f"The repo_id already exists. If you intended to resume the collection of data, then execute this script with the --resume flag. Otherwise remove it:\n'rm -r {str(self.dataset_directory)}'."
                 )
             dataset = LeRobotDataset.create(
                 repo_id=self.config.repo_id,
@@ -187,7 +189,7 @@ class RecordingManager(ABC):
                 robot_type=self.config.robot_type,
                 features=self.config.features,
                 use_videos=True,
-                root="/mnt/DataExtern/LSY-lab/real_world_5",
+                root=self.dataset_directory,
                 # image_writer_threads=1,
                 # image_writer_processes=16,
                 # batch_encoding_size=8,

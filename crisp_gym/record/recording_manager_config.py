@@ -27,6 +27,10 @@ class RecordingManagerConfig:
     num_episodes: int = 3
     push_to_hub: bool = False
 
+    # Dataset path configuration
+    use_custom_dataset_path: bool = True
+    custom_dataset_path: str = "/mnt/DataExtern/LSY-lab/real_world_5"
+
     # System configuration
     use_sound: bool = True
     queue_size: int = 16
